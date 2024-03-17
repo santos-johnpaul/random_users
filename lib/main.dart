@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+import 'homepage.dart';
 void main() => runApp(MaterialApp(
   debugShowCheckedModeBanner: false,
   home: Loading(),
@@ -12,7 +12,14 @@ class Loading extends StatefulWidget {
   State<Loading> createState() => _LoadingState();
 }
 
+
 class _LoadingState extends State<Loading> {
+  void navigateToHomepage(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => Homepage()),
+    );
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -34,6 +41,13 @@ class _LoadingState extends State<Loading> {
               'https://i.gifer.com/YCZH.gif',
               height: 200,
 
+            ),
+            SizedBox(height: 30),
+            ElevatedButton(
+              onPressed: () {
+                navigateToHomepage(context);
+              },
+              child: Text('Go to Homepage'),
             ),
           ],
         ),
