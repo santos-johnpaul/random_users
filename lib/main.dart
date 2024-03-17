@@ -16,7 +16,6 @@ class Loading extends StatefulWidget {
   State<Loading> createState() => _LoadingState();
 }
 
-
 class _LoadingState extends State<Loading> {
 
   Future<void> getData() async {
@@ -26,7 +25,7 @@ class _LoadingState extends State<Loading> {
       print(user[0]['info']['version']);
       Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context)=> Homepage()));
     } catch(e) {
-      // Handle error here
+
       showNoInternetDialog();
       print('No Internet Connection');
     }

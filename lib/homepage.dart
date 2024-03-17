@@ -1,11 +1,54 @@
 import 'package:flutter/material.dart';
-import 'main.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'var.dart';
 
-class Homepage extends StatelessWidget {
+class Homepage extends StatefulWidget {
   const Homepage({Key? key}) : super(key: key);
+
+  @override
+  State<Homepage> createState() => _HomepageState();
+}
+
+class _HomepageState extends State<Homepage> {
+  String? name;
+  String? gender;
+  String? country;
+  String? email;
+  String? age;
+  String? phoneNumber;
+  String? username;
+  String? status;
+  String? photo;
+
+  Future<void> getData() async {
+    final response = await http.get(Uri.parse(url));
+    setState(() {
+      user = [jsonDecode(response.body)];
+    });
+
+    name = user[0]['results'][0]['name']['title'] +
+        '. ' +
+        user[0]['results'][0]['name']['first'] +
+        ' ' +
+        user[0]['results'][0]['name']['last'];
+    gender = user[0]['results'][0]['gender'];
+    country = user[0]['results'][0]['location']['country'];
+    email = user[0]['results'][0]['email'];
+    username = user[0]['results'][0]['login']['username'];
+    age = user[0]['results'][0]['dob']['age'].toString();
+    phoneNumber = user[0]['results'][0]['phone'];
+    photo = user[0]['results'][0]['picture']['large'];
+    print(photo);
+
+    await Future.delayed(Duration(seconds: 2));
+  }
+
+  @override
+  void initState() {
+    getData();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -34,16 +77,14 @@ class Homepage extends StatelessWidget {
                   children: [
                     CircleAvatar(
                       radius: 50,
-                      backgroundImage: NetworkImage(
-                        'https://tse1.explicit.bing.net/th?id=OIP.Ybso1cBFcCQ3OxH8HlSDvgHaHa&pid=Api&P=0&h=180',
-                      ),
+                      backgroundImage: NetworkImage(photo ?? ''),
                     ),
                     SizedBox(width: 20),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'Lorem Ipsum',
+                          name ?? '',
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: 20,
@@ -51,16 +92,16 @@ class Homepage extends StatelessWidget {
                         ),
                         SizedBox(height: 5),
                         Text(
-                          '42 years old',
+                          age ?? '',
                           style: TextStyle(
                             color: Colors.grey,
                           ),
                         ),
                         SizedBox(height: 5),
                         Text(
-                          'Male',
+                          gender ?? '',
                           style: TextStyle(
-                            color: Colors.blue,
+                            color: gender == 'male' ? Colors.blue : Colors.pink,
                           ),
                         ),
                       ],
@@ -81,10 +122,10 @@ class Homepage extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    _buildDataRow(Icons.location_city,  'Country Placeholder'),
-                    _buildDataRow(Icons.email, 'EmailPlaceholder@example.com'),
-                    _buildDataRow(Icons.person_2_outlined, 'UsernamePlaceholder'),
-                    _buildDataRow(Icons.phone_android_outlined, '+1234567890'),
+                    _buildDataRow (Icons.location_city, country ?? ''),
+                    _buildDataRow(Icons.email, email ?? ''),
+                    _buildDataRow(Icons.person_2_outlined, username ?? ''),
+                    _buildDataRow(Icons.phone_android_outlined, phoneNumber ?? ''),
                   ],
                 ),
               ),
