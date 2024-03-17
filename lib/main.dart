@@ -30,7 +30,11 @@ class _LoadingState extends State<Loading> {
               style: TextStyle(fontWeight: FontWeight.bold),
             ),
             SizedBox(height: 30),
-            CircularProgressIndicator(color: Colors.blue),
+            Image.network(
+              'https://i.gifer.com/YCZH.gif',
+              height: 200,
+
+            ),
           ],
         ),
       ),
